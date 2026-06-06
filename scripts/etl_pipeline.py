@@ -52,6 +52,10 @@ print("✅ NAV cleaned successfully")
 # 2. CLEAN INVESTOR TRANSACTIONS
 # =====================================================
 
+# =====================================================
+# 2. CLEAN INVESTOR TRANSACTIONS
+# =====================================================
+
 print("\nCleaning investor_transactions.csv")
 print("=" * 60)
 
@@ -62,7 +66,10 @@ txn = pd.read_csv(
 print("\nColumns found:")
 print(txn.columns)
 
-# Convert date
+print("\nInitial Shape:")
+print(txn.shape)
+
+# Convert transaction date
 txn["transaction_date"] = pd.to_datetime(
     txn["transaction_date"],
     errors="coerce"
@@ -71,48 +78,69 @@ txn["transaction_date"] = pd.to_datetime(
 # Standardize transaction types
 txn["transaction_type"] = (
     txn["transaction_type"]
+    .astype(str)
     .str.strip()
-    .str.title()
+    .str.upper()
 )
 
-# Keep valid types only
+# Valid transaction types
 valid_types = [
-    "Sip",
-    "Lumpsum",
-    "Redemption"
+    "SIP",
+    "LUMPSUM",
+    "REDEMPTION"
 ]
 
 txn = txn[
-    txn["transaction_type"].isin(valid_types)
+    txn["transaction_type"]
+    .isin(valid_types)
 ]
 
+print("\nAfter transaction type filter:")
+print(txn.shape)
+
 # Amount > 0
-txn = txn[txn["amount_inr"] > 0]
+txn["amount_inr"] = pd.to_numeric(
+    txn["amount_inr"],
+    errors="coerce"
+)
+
+txn = txn[
+    txn["amount_inr"] > 0
+]
+
+print("\nAfter amount filter:")
+print(txn.shape)
 
 # Clean KYC status
 txn["kyc_status"] = (
     txn["kyc_status"]
     .astype(str)
     .str.strip()
-    .str.upper()
 )
 
-valid_kyc = ["YES", "NO"]
-
+# Only remove blanks/nulls
 txn = txn[
-    txn["kyc_status"].isin(valid_kyc)
+    txn["kyc_status"].notna()
 ]
+
+print("\nAfter KYC cleaning:")
+print(txn.shape)
 
 # Remove duplicates
 txn = txn.drop_duplicates()
 
-# Save
+print("\nFinal Shape:")
+print(txn.shape)
+
+# Save cleaned file
 txn.to_csv(
     f"{PROCESSED_PATH}/cleaned_investor_transactions.csv",
     index=False
 )
 
-print("✅ Investor transactions cleaned successfully")
+print(
+    "✅ Investor transactions cleaned successfully"
+)
 
 # =====================================================
 # 3. CLEAN SCHEME PERFORMANCE
