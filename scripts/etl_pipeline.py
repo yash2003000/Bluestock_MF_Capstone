@@ -1,3 +1,12 @@
+"""
+Bluestock Mutual Fund Capstone
+
+Purpose:
+Cleans, transforms, and processes
+raw mutual fund datasets and stores
+them in SQLite database.
+Author: Yash Chowdhary
+"""
 import pandas as pd
 import os
 from sqlalchemy import create_engine

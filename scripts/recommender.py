@@ -1,3 +1,11 @@
+"""
+Bluestock Mutual Fund Capstone
+
+Purpose:
+Recommends top mutual funds
+based on investor risk appetite.
+Author: Yash Chowdhary
+"""
 import pandas as pd
 
 # =====================================================

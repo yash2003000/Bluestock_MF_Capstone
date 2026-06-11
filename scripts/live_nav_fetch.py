@@ -1,3 +1,11 @@
+"""
+Bluestock Mutual Fund Capstone
+
+Purpose:
+Fetches latest NAV data for
+mutual funds from API.
+Author: Yash Chowdhary
+"""
 import requests
 import pandas as pd
 import os

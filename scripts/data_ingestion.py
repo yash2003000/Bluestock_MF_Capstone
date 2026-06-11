@@ -1,3 +1,12 @@
+"""
+Bluestock Mutual Fund Capstone
+
+Purpose:
+Downloads and ingests raw mutual fund
+datasets for further processing.
+Author: Yash Chowdhary
+"""
+
 import pandas as pd
 import os
 
